@@ -69,7 +69,7 @@ def partition_array(z, l, r):
     part of the array after the first partition has been executed:
     >>> z = [5, 3, 2, 11, 32, 99, 7]
     >>> _ = partition_array(z, 0, len(z))
-    >>> _ =partition_array(z, 0, 3)
+    >>> _ = partition_array(z, 0, 3)
     >>> z
     [2, 3, 5, 7, 32, 99, 11]  # left part already sorted.
 
