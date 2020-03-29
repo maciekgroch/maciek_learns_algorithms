@@ -1,4 +1,5 @@
 from collections import defaultdict, deque
+import heapq
 import unittest
 
 import numpy as np
@@ -77,13 +78,11 @@ def bfs(adjacency_dict, start):
     BFS can be used to find shortest paths from starting vertex to all other
     (connected) paths of the graph.
     >>> a_dict = {'A': ['B', 'E'], 'B': ['C'], 'C': ['D'], 'D': ['E'], 'E': []}
-    A -> B -> C -> D -> E
-     |---------------->
     >>> paths, distances = bfs(a_dict, 'A')
     >>> paths
-    {'A': [], 'B': ['B'], 'E': ['E'], 'C': ['B', 'C'], 'D': ['B', 'C', 'D']})
+    defaultdict(<class 'list'>, {'A': [], 'B': ['B'], 'E': ['E'], 'C': ['B', 'C'], 'D': ['B', 'C', 'D']})
     >>> distances
-    >>> {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 1}
+    {'A': 0, 'B': 1, 'C': 2, 'D': 3, 'E': 1}
     """
     visited = defaultdict(bool)
     visited[start] = True
@@ -176,6 +175,42 @@ def find_sccs(adjacency_dict):
     return sccs
 
 
+def dijkstra_shortest_path(graph, start, end):
+    """Finds the shortest path between `start` and `end` using Dijkstra's
+    algorithm.
+
+    :param graph: a directed graph adjacency dict: {v: (weight, u)}
+    :type graph: dict
+    :param start: start vertex
+    :type: start: str
+    :param end: end vertex
+    :type end: str
+    :return: distance between start and end
+    :rtype: numeric
+
+    :Example:
+    >>> graph = {'A': [(4, 'B'), (2, 'C')], 'B': [(3, 'C'),], 'C': [(1, 'B')]}
+    >>> dijkstra_shortest_path(graph, 'A', 'B')  # The shortest path is via C
+    3
+    """
+    heap = [(0, start)]
+    visited = defaultdict(bool)
+    while heap:
+        length_u, u = heapq.heappop(heap)
+        if visited[u]:
+            continue
+        visited[u] = True
+        if u == end:
+            return length_u
+        for length_v, v in graph[u]:
+            if visited[v]:
+                continue
+            added_length = length_u + length_v
+            heapq.heappush(heap, (added_length, v))
+    # If we got here there is no connection start -> end.
+    return np.nan
+
+
 class TestSearching(unittest.TestCase):
     """For tests I am using graph from Fig. 3.7 in
     Dasgupta, Sanjoy, Christos H. Papadimitriou, and Umesh V. Vazirani.
@@ -216,6 +251,13 @@ class TestSearching(unittest.TestCase):
         'K': ['L'],
         'L': ['J'],
     }
+    DIJKSTRA_TEST_DICT = {  # Fig 4.9
+        'A': [(4, 'B'), (2, 'C')],
+        'B': [(3, 'C'), (2, 'D'), (3, 'E')],
+        'C': [(1, 'B'), (4, 'D'), (5, 'E')],
+        'D': [],
+        'E': [(1, 'D')]
+    }
 
     def test_bfs(self):
         expected_paths = defaultdict(list)
@@ -255,7 +297,7 @@ class TestSearching(unittest.TestCase):
         actual = post_to_sorted_list(self.POST_TO_SORTED_LIST_TEST_DICT)
         self.assertListEqual(expected, actual)
 
-    def test_scc(self):
+    def test_find_sccs(self):
         expected_sccs = [
             ['A'],
             ['B', 'E'],
@@ -270,3 +312,15 @@ class TestSearching(unittest.TestCase):
         for expected_scc, actual_scc in zip(expected_sccs, actual_sccs):
             with self.subTest(e=expected_sccs, a=actual_sccs):
                 self.assertListEqual(expected_scc, actual_scc)
+
+    def test_dijkstra_shortest_path(self):
+        expected = {'A': 0, 'B': 3, 'C': 2, 'D': 5, 'E': 6}
+        for v, expected_distance in expected.items():
+            actual_distance = dijkstra_shortest_path(
+                self.DIJKSTRA_TEST_DICT, 'A', v)
+            with self.subTest(a=actual_distance, e=expected_distance):
+                self.assertEqual(actual_distance, expected_distance)
+
+    def test_dijkstra_shortest_path_nan_if_no_connection(self):
+        distance = dijkstra_shortest_path(self.DIJKSTRA_TEST_DICT, 'A', 'X')
+        self.assertTrue(np.isnan(distance))
