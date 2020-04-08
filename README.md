@@ -13,3 +13,5 @@ I also followed the book on algorithms:
 * Dasgupta, Sanjoy, Christos H. Papadimitriou, and Umesh V. Vazirani. 
 *Algorithms*. Boston: McGraw-Hill Higher Education, 2008
 
+* Basant Agarwal and Benjamin Baka *Hands-On Data Structures and Algorithms with Python: Write complex and powerful code using the latest features of Python 3.7*,
+Packt 2018 
