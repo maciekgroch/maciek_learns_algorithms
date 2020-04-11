@@ -368,7 +368,7 @@ class TestBST(unittest.TestCase):
     def test_remove_right_leaf(self):
         """3. Remove right leaf (7)
         Considering case:
-                        5               remove(3) ->         5
+                        5               remove(7) ->         5
                 3               7                      3           (None)
         """
         bst = BST()
