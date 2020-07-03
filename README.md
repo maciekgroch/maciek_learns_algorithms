@@ -4,6 +4,7 @@ following Algorithms courses:
 
 * Divide and Conquer, Sorting and Searching, and Randomized Algorithms on https://www.coursera.org/learn/algorithms-divide-conquer
 * Graph Search, Shortest Paths, and Data Structures on https://www.coursera.org/learn/algorithms-graphs-data-structures
+* Greedy Algorithms, Minimum Spanning Trees, and Dynamic Programming on https://www.coursera.org/learn/algorithms-greedy/
 
 One note is I do not share code I used to solve programming 
 assignments as that would not be fair.
