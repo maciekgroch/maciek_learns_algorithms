@@ -9,7 +9,7 @@ following Algorithms courses:
 One note is I do not share code I used to solve programming 
 assignments as that would not be fair.
 
-I also followed the book on algorithms: 
+I also followed the books on algorithms: 
 
 * Dasgupta, Sanjoy, Christos H. Papadimitriou, and Umesh V. Vazirani. 
 *Algorithms*. Boston: McGraw-Hill Higher Education, 2008
